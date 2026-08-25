@@ -1,0 +1,25 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: opsboard-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: opsboard
+      POSTGRES_USER: opsboard
+      POSTGRES_PASSWORD: opsboard
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - opsboard-postgres-data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U opsboard -d opsboard"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  opsboard-postgres-data:
